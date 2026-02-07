@@ -1,47 +1,27 @@
-// Event Listeners
+// Complete event listeners
 
-// Import image and GIF functionality
-const importImageBtn = document.getElementById('import-image');
-const importGifBtn = document.getElementById('import-gif');
+// Import required functionalities
+import { initializeCanvas } from './canvas';
+import { setupToolbarActions } from './toolbar';
+import { managePropertiesPanel } from './propertiesPanel';
 
-importImageBtn.addEventListener('click', () => {
-    // Logic for importing an image
+// Adding event listeners
+window.addEventListener('load', () => {
+    initializeCanvas();
+    setupToolbarActions();
+    managePropertiesPanel();
 });
 
-importGifBtn.addEventListener('click', () => {
-    // Logic for importing a GIF
-});
+// Canvas initialization and toolbar setup
+function setup() {
+    // Canvas properties initialization
+    initializeCanvas();
 
-// Text Addition
-const addTextBtn = document.getElementById('add-text');
-addTextBtn.addEventListener('click', () => {
-    // Logic for adding text
-});
+    // Toolbar actions setup
+    setupToolbarActions();
 
-// Toolbar functionality
-const toolbar = document.getElementById('toolbar');
-
-// Toolbar actions
-toolbar.addEventListener('click', (event) => {
-    if(event.target.matches('.tool')) {
-        // Logic for selecting tools from the toolbar
-    }
-});
-
-// Properties Panel Management
-const propertiesPanel = document.getElementById('properties-panel');
-
-function updateProperties(selectedElement) {
-    // Logic for updating properties panel based on selected elements
+    // Properties panel management
+    managePropertiesPanel();
 }
 
-// Canvas operations
-const canvas = document.getElementById('canvas');
-
-function initializeCanvas() {
-    // Logic for initializing canvas
-}
-
-initializeCanvas();
-
-// Additional canvas operations can be added as needed
+setup();
