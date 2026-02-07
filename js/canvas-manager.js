@@ -1,68 +1,40 @@
 class CanvasManager {
-    constructor(canvasElement) {
-        this.canvas = new fabric.Canvas(canvasElement);
-    }
+  constructor(canvasId) {
+    this.canvas = new fabric.Canvas(canvasId);
+  }
 
-    addImage(url, options = {}) {
-        fabric.Image.fromURL(url, (img) => {
-            img.set(options);
-            this.canvas.add(img);
-        });
-    }
+  addImage(url) {
+    fabric.Image.fromURL(url, (img) => {
+      this.canvas.add(img);
+    });
+  }
 
-    addGIF(url, options = {}) {
-        const gif = new fabric.Image();
-        gif.setSrc(url, () => {
-            gif.set(options);
-            this.canvas.add(gif);
-        });
-    }
+  addGif(url) {
+    fabric.Image.fromURL(url, (img) => {
+      img.set({ selectable: true });
+      this.canvas.add(img);
+    });
+  }
 
-    addText(text, options = {}) {
-        const textObj = new fabric.Text(text, options);
-        this.canvas.add(textObj);
-    }
+  addText(text) {
+    const textObj = new fabric.Text(text, { left: 100, top: 100 });
+    this.canvas.add(textObj);
+  }
 
-    duplicateObject() {
-        const activeObject = this.canvas.getActiveObject();
-        if (activeObject) {
-            const clone = fabric.util.object.clone(activeObject);
-            clone.set({
-                left: activeObject.left + 10,
-                top: activeObject.top + 10,
-            });
-            this.canvas.add(clone);
-            this.canvas.renderAll();
-        }
-    }
+  duplicate(object) {
+    const clone = fabric.util.object.clone(object);
+    this.canvas.add(clone);
+  }
 
-    deleteObject() {
-        const activeObject = this.canvas.getActiveObject();
-        if (activeObject) {
-            this.canvas.remove(activeObject);
-            this.canvas.renderAll();
-        }
-    }
+  delete(object) {
+    this.canvas.remove(object);
+  }
 
-    sendToBack() {
-        const activeObject = this.canvas.getActiveObject();
-        if (activeObject) {
-            this.canvas.sendToBack(activeObject);
-            this.canvas.renderAll();
-        }
-    }
+  bringToFront(object) {
+    this.canvas.bringToFront(object);
+  }
 
-    sendToFront() {
-        const activeObject = this.canvas.getActiveObject();
-        if (activeObject) {
-            this.canvas.bringToFront(activeObject);
-            this.canvas.renderAll();
-        }
-    }
-
-    exportCanvas() {
-        return this.canvas.toDataURL();
-    }
+  sendToBack(object) {
+    this.canvas.sendToBack(object);
+  }
 }
-
-export default CanvasManager;
