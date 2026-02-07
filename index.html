@@ -3,134 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Canvas Builder</title>
+    <title>Interactive Canvas Builder - Fase 1</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white overflow-hidden">
     <div class="flex h-screen">
-        <!-- SIDEBAR IZQUIERDO - HERRAMIENTAS -->
-        <div class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col overflow-y-auto">
-            <div class="p-4 border-b border-gray-700">
-                <h1 class="text-2xl font-bold">Canvas Builder</h1>
+        <div class="w-72 bg-gray-800 border-r border-gray-700 flex flex-col">
+            <div class="p-4 border-b border-gray-700 bg-gray-900">
+                <h1 class="text-2xl font-bold">🎨 Canvas Builder</h1>
             </div>
-
-            <!-- PANEL DE IMPORTACIÓN -->
             <div class="p-4 border-b border-gray-700">
-                <h2 class="text-sm font-semibold mb-3 text-gray-300">IMPORTAR ELEMENTOS</h2>
+                <h2 class="text-sm font-semibold mb-3 text-yellow-400 uppercase">📥 Importar Elementos</h2>
                 <div class="space-y-2">
-                    <button id="btn-import-image" class="w-full bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded text-sm font-medium transition">
-                        🖼️ Imagen
-                    </button>
-                    <button id="btn-import-gif" class="w-full bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded text-sm font-medium transition">
-                        🎬 GIF Animado
-                    </button>
-                    <button id="btn-import-text" class="w-full bg-green-600 hover:bg-green-700 px-3 py-2 rounded text-sm font-medium transition">
-                        📝 Texto
-                    </button>
+                    <button id="btn-import-image" class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded font-medium text-sm">🖼️ Importar Imagen</button>
+                    <button id="btn-import-gif" class="w-full bg-purple-600 hover:bg-purple-700 px-4 py-3 rounded font-medium text-sm">🎬 Importar GIF</button>
+                    <button id="btn-import-text" class="w-full bg-green-600 hover:bg-green-700 px-4 py-3 rounded font-medium text-sm">📝 Agregar Texto</button>
                 </div>
-                <input type="file" id="file-input-image" accept="image/*" class="hidden" />
-                <input type="file" id="file-input-gif" accept=".gif,image/gif" class="hidden" />
+                <input type="file" id="file-input-image" accept="image/jpeg,image/png" class="hidden" />
+                <input type="file" id="file-input-gif" accept="image/gif" class="hidden" />
             </div>
-
-            <!-- PANEL DE HERRAMIENTAS -->
             <div class="p-4 border-b border-gray-700">
-                <h2 class="text-sm font-semibold mb-3 text-gray-300">HERRAMIENTAS</h2>
+                <h2 class="text-sm font-semibold mb-3 text-cyan-400 uppercase">🛠️ Herramientas</h2>
                 <div class="space-y-2">
-                    <button id="btn-duplicate" class="w-full bg-orange-600 hover:bg-orange-700 px-3 py-2 rounded text-sm font-medium transition" disabled>
-                        📋 Duplicar
-                    </button>
-                    <button id="btn-delete" class="w-full bg-red-600 hover:bg-red-700 px-3 py-2 rounded text-sm font-medium transition" disabled>
-                        🗑️ Eliminar
-                    </button>
-                    <button id="btn-bring-forward" class="w-full bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm font-medium transition" disabled>
-                        ⬆️ Adelante
-                    </button>
-                    <button id="btn-send-backward" class="w-full bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm font-medium transition" disabled>
-                        ⬇️ Atrás
-                    </button>
+                    <button id="btn-duplicate" class="w-full bg-orange-600 hover:bg-orange-700 px-4 py-3 rounded font-medium text-sm" disabled>📋 Duplicar</button>
+                    <button id="btn-delete" class="w-full bg-red-600 hover:bg-red-700 px-4 py-3 rounded font-medium text-sm" disabled>🗑️ Eliminar</button>
+                    <button id="btn-bring-forward" class="w-full bg-indigo-600 hover:bg-indigo-700 px-4 py-3 rounded font-medium text-sm" disabled>⬆️ Traer al Frente</button>
+                    <button id="btn-send-backward" class="w-full bg-indigo-600 hover:bg-indigo-700 px-4 py-3 rounded font-medium text-sm" disabled>⬇️ Enviar Atrás</button>
                 </div>
             </div>
-
-            <!-- PANEL DE PROPIEDADES -->
-            <div class="p-4 border-b border-gray-700 flex-1">
-                <h2 class="text-sm font-semibold mb-3 text-gray-300">PROPIEDADES</h2>
+            <div class="p-4 flex-1 overflow-y-auto">
+                <h2 class="text-sm font-semibold mb-3 text-pink-400 uppercase">⚙️ Propiedades</h2>
                 <div id="properties-panel" class="space-y-3">
-                    <div class="text-xs text-gray-500">Selecciona un objeto para ver propiedades</div>
+                    <div class="text-xs text-gray-400 bg-gray-700 p-2 rounded">Selecciona un objeto para ver propiedades</div>
                 </div>
+            </div>
+            <div class="p-4 border-t border-gray-700">
+                <button id="btn-clear-canvas" class="w-full bg-red-700 hover:bg-red-800 px-4 py-2 rounded font-medium text-sm mb-2">🗑️ Limpiar Todo</button>
+                <button id="btn-export-canvas" class="w-full bg-green-700 hover:bg-green-800 px-4 py-2 rounded font-medium text-sm">💾 Exportar PNG</button>
             </div>
         </div>
-
-        <!-- ÁREA CENTRAL - CANVAS -->
         <div class="flex-1 flex flex-col bg-gray-700">
-            <!-- HEADER CON TÍTULO -->
-            <div class="bg-gray-800 border-b border-gray-700 px-6 py-3 flex justify-between items-center">
-                <h2 class="text-lg font-semibold">Canvas Editor</h2>
-                <div class="space-x-2">
-                    <button id="btn-clear-canvas" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-sm font-medium transition">
-                        Limpiar Todo
-                    </button>
-                    <button id="btn-export-canvas" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm font-medium transition">
-                        Exportar
-                    </button>
-                </div>
+            <div class="bg-gray-900 border-b border-gray-700 px-6 py-4">
+                <h2 class="text-xl font-semibold">Canvas Editor</h2>
             </div>
-
-            <!-- CANVAS CONTAINER -->
             <div class="flex-1 flex items-center justify-center p-6">
-                <div class="bg-gray-600 rounded-lg shadow-2xl" style="width: 1000px; height: 600px; position: relative;">
-                    <canvas id="fabric-canvas" width="1000" height="600" class="rounded-lg" style="border: 2px solid #374151;"></canvas>
+                <div class="bg-white rounded-lg shadow-2xl" style="width: 1200px; height: 700px;">
+                    <canvas id="fabric-canvas" width="1200" height="700" class="rounded-lg"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- MODAL PARA AÑADIR TEXTO -->
-    <div id="text-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-gray-800 rounded-lg p-6 w-96 border border-gray-700">
-            <h3 class="text-lg font-bold mb-4">Añadir Texto</h3>
+    <div id="text-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-lg p-8 w-96 border-2 border-gray-600">
+            <h3 class="text-2xl font-bold mb-6">✏️ Agregar Texto</h3>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-2">Contenido</label>
-                    <textarea id="text-content" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" rows="3" placeholder="Escribe tu texto..."></textarea>
+                    <label class="block text-sm font-semibold mb-2">Contenido</label>
+                    <textarea id="text-content" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" rows="3" placeholder="Escribe tu texto aquí..."></textarea>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-2">Fuente</label>
+                    <label class="block text-sm font-semibold mb-2">Fuente</label>
                     <select id="text-font" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                        <option>Arial</option>
-                        <option>Georgia</option>
-                        <option>Times New Roman</option>
-                        <option>Courier New</option>
-                        <option>Verdana</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
                     </select>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2">Tamaño (px)</label>
-                        <input type="number" id="text-size" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" value="24" min="8" max="200">
+                        <label class="block text-sm font-semibold mb-2">Tamaño (px)</label>
+                        <input type="number" id="text-size" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" value="32" min="8" max="200">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2">Color</label>
-                        <input type="color" id="text-color" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 cursor-pointer" value="#ffffff">
+                        <label class="block text-sm font-semibold mb-2">Color</label>
+                        <input type="color" id="text-color" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" value="#000000">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-2">Alineación</label>
+                    <label class="block text-sm font-semibold mb-2">Alineación</label>
                     <div class="flex space-x-2">
                         <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded text-align-btn" data-align="left">⬅️ Izq</button>
                         <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded text-align-btn" data-align="center">↔️ Centro</button>
                         <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded text-align-btn" data-align="right">➡️ Der</button>
                     </div>
                 </div>
-                <div class="flex space-x-2">
-                    <button id="btn-text-confirm" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded font-medium">Añadir</button>
-                    <button id="btn-text-cancel" class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded font-medium">Cancelar</button>
+                <div class="flex space-x-3 pt-4">
+                    <button id="btn-text-confirm" class="flex-1 bg-green-600 hover:bg-green-700 py-3 rounded font-bold">✓ Agregar Texto</button>
+                    <button id="btn-text-cancel" class="flex-1 bg-gray-700 hover:bg-gray-600 py-3 rounded font-bold">✕ Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="js/canvas-manager.js"></script>
     <script src="js/app.js"></script>
 </body>
